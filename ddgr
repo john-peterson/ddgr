@@ -29,7 +29,7 @@ import os
 import platform
 import shutil
 import signal
-from subprocess import Popen, PIPE, DEVNULL
+from subprocess import Popen, PIPE, DEVNULL, run
 import sys
 import tempfile
 import textwrap
@@ -117,8 +117,12 @@ def open_url(url):
 
     # Custom URL handler gets max priority
     if hasattr(open_url, 'url_handler'):
-        with Popen([open_url.url_handler, url], stdin=PIPE) as pipe:
+        # with Popen([open_url.url_handler, url], stdin=PIPE) as pipe:
+        # with Popen([open_url.url_handler, url], stdin=sys.stdin) as pipe:
+        with Popen([open_url.url_handler, url]) as pipe:
             pipe.communicate()
+        # Popen([open_url.url_handler, url])
+        # run([open_url.url_handler, url])
         return
 
     browser = webbrowser.get()
